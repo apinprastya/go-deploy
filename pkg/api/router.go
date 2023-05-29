@@ -15,15 +15,15 @@ func (a *Api) checkSecret(ctx *gin.Context) {
 
 func (a *Api) RegisterRouter() {
 
-	a.r.NoRoute(func(ctx *gin.Context) {
+	a.ginEngine.NoRoute(func(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, map[string]interface{}{"error": "page not found"})
 	})
 
-	a.r.NoMethod(func(ctx *gin.Context) {
+	a.ginEngine.NoMethod(func(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, map[string]interface{}{"error": "method not allowed"})
 	})
 
-	a.r.POST("/upload", a.checkSecret, func(ctx *gin.Context) {
+	a.ginEngine.POST("/upload", a.checkSecret, func(ctx *gin.Context) {
 		version := ctx.PostForm("version")
 		path := ctx.PostForm("path")
 		filename := ctx.PostForm("filename")
@@ -42,7 +42,7 @@ func (a *Api) RegisterRouter() {
 		ctx.JSON(http.StatusCreated, map[string]interface{}{"status": true})
 	})
 
-	a.r.GET("/setlive/:version", a.checkSecret, func(ctx *gin.Context) {
+	a.ginEngine.GET("/setlive/:version", a.checkSecret, func(ctx *gin.Context) {
 		version := ctx.Param("version")
 		if err := a.srv.SetLive(version); err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})

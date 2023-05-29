@@ -8,13 +8,13 @@ import (
 )
 
 type Api struct {
-	srv    *service.Service
-	r      *gin.Engine
-	secret string
+	srv       *service.Service
+	ginEngine *gin.Engine
+	secret    string
 }
 
 func NewApi(secret string, srv *service.Service) *Api {
-	return &Api{secret: secret, srv: srv, r: gin.Default()}
+	return &Api{secret: secret, srv: srv, ginEngine: gin.Default()}
 }
 
 func (a *Api) Run(address string, port int) error {
@@ -22,7 +22,7 @@ func (a *Api) Run(address string, port int) error {
 
 	a.RegisterRouter()
 
-	a.r.Run(fmt.Sprintf("%s:%d", address, port))
+	a.ginEngine.Run(fmt.Sprintf("%s:%d", address, port))
 
 	return nil
 }

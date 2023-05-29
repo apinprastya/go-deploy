@@ -11,8 +11,10 @@ Command set live json:
 ```
 {
     "command": "setLive",
-    "excludedFolders": [],
-    "excludedFiles": []
+    "options": {
+        "excludedFolders": [],
+        "excludedFiles": []   
+    }
 }
 ```
 When set any version to live, it will copy all data to production folder. It possible that on production has generated folder like logs that we don't need to sync, just add the folder to `excludedFolders`
@@ -21,10 +23,13 @@ Command run will have json:
 ```
 {
     "command": "run",
-    "envs": {
-        "ANY_ENVIRONTMENT": "VARIABLES"
+    "options": {
+        "executable": "your app executable",
+        "envs": {
+            "ANY_ENVIRONTMENT": "VARIABLES"
+        }
+        "args": ["--production"]
     }
-    "args": ["--production"]
 }
 ```
 ### Restart
@@ -68,26 +73,32 @@ When uploading a folder to server using `Client App`, make sure to have the `App
         {
             "command": "setLive",
             "description": "set the application to live",
-            "excludedFolders": [],
-            "excludedFiles": []
+            "options": {
+                "excludedFolders": ["logs"],
+                "excludedFiles": ["log.log"]
+            }
         },
         {
             "command": "run",
             "description": "database migrations",
-            "executable": "migration",
-            "envs": {
-                "ANY_ENVIRONTMENT": "VARIABLES"
+            "options": {
+                "executable": "migration",
+                "envs": {
+                    "ANY_ENVIRONTMENT": "VARIABLES"
+                }
+                "args": ["--folder", "myfolder"]
             }
-            "args": ["--folder", "myfolder"]
         },
         {
             "command": "run",
             "description": "run the application",
-            "executable": "yourAppName",
-            "envs": {
-                "ANY_ENVIRONTMENT": "VARIABLES"
+            "options": {
+                "executable": "yourAppName",
+                "envs": {
+                    "ANY_ENVIRONTMENT": "VARIABLES"
+                }
+                "args": ["--production"]
             }
-            "args": ["--production"]
         }
     ],
     "restart": [
